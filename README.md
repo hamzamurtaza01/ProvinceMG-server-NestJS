@@ -1,5 +1,4 @@
-# Province Management 🇺🇦
-<p align="center"><a href="https://discord.com/channels/520622812742811698/1197293125434093701"><img src="https://github.com/brocoders/nestjs-boilerplate/assets/72293912/c9d5fbf0-b56d-46b5-bb30-f96f44764bae" width="300"/></a></p>
+# Province Management
 <br />
 
 ## Description <!-- omit in toc -->
