@@ -118,18 +118,18 @@ export class UsersService {
     return this.usersRepository.findByEmail(email);
   }
 
-  findBySocialIdAndProvider({
-    socialId,
-    provider,
-  }: {
-    socialId: User['socialId'];
-    provider: User['provider'];
-  }): Promise<NullableType<User>> {
-    return this.usersRepository.findBySocialIdAndProvider({
-      socialId,
-      provider,
-    });
-  }
+  // findBySocialIdAndProvider({
+  //   socialId,
+  //   provider,
+  // }: {
+  //   socialId: User['socialId'];
+  //   provider: User['provider'];
+  // }): Promise<NullableType<User>> {
+  //   return this.usersRepository.findBySocialIdAndProvider({
+  //     socialId,
+  //     provider,
+  //   });
+  // }
 
   async update(
     id: User['id'],
