@@ -1,18 +1,11 @@
-/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, OneToMany, OneToOne } from 'typeorm';
+import { Entity, OneToMany, OneToOne } from 'typeorm';
+import { BaseEntity } from '../base.entity';
 import { JiraIssue } from './jira-issue.entity';
 import { Caller } from '../caller.entity';
 
 @Entity()
-export class JiraOrganisation {
-  @ApiProperty({
-    type: 'uuid',
-    description: 'Unique identifier for the Jira organisation',
-  })
-  @Column({ type: 'uuid', primary: true })
-  id: string;
-
+export class JiraOrganisation extends BaseEntity {
   @OneToMany(() => JiraIssue, (issue) => issue.target)
   @ApiProperty({
     type: () => JiraIssue,

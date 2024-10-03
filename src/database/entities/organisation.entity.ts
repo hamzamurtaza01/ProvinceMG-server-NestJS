@@ -1,15 +1,11 @@
-/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { User } from './user.entity';
 import { UserOrganisation } from './ring-central-entity/user-organisation.entity';
+import { BaseEntity } from './base.entity';
 
 @Entity()
-export class Organisation {
-  @ApiProperty({ type: 'uuid', description: 'User ID' })
-  @Column({ type: 'uuid', primary: true, generated: 'uuid' })
-  id: string;
-
+export class Organisation extends BaseEntity {
   @Column({ type: 'varchar' })
   @ApiProperty({ type: 'string', description: 'Name of the organisation' })
   name: string;

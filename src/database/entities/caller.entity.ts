@@ -1,19 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
+import { BaseEntity } from './base.entity';
 import { ContactPoint } from './contact-point.entity';
 import { Session } from './session.entity';
 import { JiraOrganisation } from './jira-entity/jira-organisation.entity';
 import { ProsoftCoEmployee } from './prosoftware-entity/prosoft-co-employee.entity';
 
 @Entity()
-export class Caller {
-  @ApiProperty({
-    type: 'uuid',
-    description: 'Unique identifier for the caller',
-  })
-  @Column({ type: 'uuid', primary: true })
-  id: string;
-
+export class Caller extends BaseEntity {
   @ApiProperty({ type: 'string', description: 'Name of the caller' })
   @Column({ type: 'string' })
   name: string;

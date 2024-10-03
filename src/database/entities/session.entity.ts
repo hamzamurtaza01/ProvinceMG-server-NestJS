@@ -1,44 +1,29 @@
-/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
 import {
   Entity,
   Column,
   ManyToOne,
-  OneToMany,
   ManyToMany,
   JoinTable,
   OneToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Note } from './notes.entity';
 import { Caller } from './caller.entity';
 import { Call } from './ring-central-entity/call.entity';
 import { JiraIssue } from './jira-entity/jira-issue.entity';
+import { BaseEntity } from './base.entity';
 
 @Entity()
-export class Session {
-  @Column({ type: 'uuid', primary: true })
-  @ApiProperty({
-    type: 'string',
-    description: 'Unique identifier for the session',
-  })
-  id: string;
-
+export class Session extends BaseEntity {
   @Column({ type: 'uuid', nullable: true })
   @ApiProperty({
     type: 'string',
     description: 'Jira Issue ID associated with the session',
   })
   jiraIssueId: string;
-
-  @OneToOne(() => JiraIssue, { nullable: false })
-  @JoinColumn({ name: 'jiraIssueId', referencedColumnName: 'id' })
-  @ApiProperty({
-    type: () => JiraIssue,
-    description: 'Jira issue associated with the session',
-  })
-  jiraIssue: JiraIssue;
 
   @Column({ type: 'varchar', length: 255 })
   @ApiProperty({
@@ -93,4 +78,14 @@ export class Session {
     description: 'Call associated with this session based on ringCentralId',
   })
   call: Call;
+
+  @OneToOne(() => JiraIssue, (jiraIssue) => jiraIssue.session, {
+    nullable: true,
+  })
+  @JoinColumn({ name: 'jiraIssueId', referencedColumnName: 'id' })
+  @ApiProperty({
+    type: () => JiraIssue,
+    description: 'The Jira issue associated with the session',
+  })
+  jiraIssue: JiraIssue;
 }

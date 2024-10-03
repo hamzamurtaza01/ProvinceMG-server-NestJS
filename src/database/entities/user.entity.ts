@@ -1,15 +1,12 @@
-/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
 import { Organisation } from './organisation.entity';
 import { Session } from './session.entity';
+import { BaseEntity } from './base.entity';
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
   @ApiProperty({ type: 'uuid', description: 'User ID' })
-  @Column({ type: 'uuid', primary: true, generated: 'uuid' })
-  id: string;
-
   @ApiProperty({ type: 'string', description: 'Name of the user' })
   @Column({ type: 'varchar' })
   name: string;

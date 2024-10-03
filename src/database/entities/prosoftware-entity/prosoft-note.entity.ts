@@ -1,18 +1,11 @@
-/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
+import { BaseEntity } from '../base.entity';
 import { ProsoftCoEmployee } from './prosoft-co-employee.entity';
 import { Note } from '../notes.entity';
 
 @Entity()
-export class ProsoftNote {
-  @ApiProperty({
-    type: 'uuid',
-    description: 'Unique identifier for the ProsoftNote',
-  })
-  @Column({ type: 'uuid', primary: true })
-  id: string;
-
+export class ProsoftNote extends BaseEntity {
   @OneToOne(() => Note, (note) => note.prosoftNote, { nullable: false })
   @JoinColumn({ name: 'prosoftId', referencedColumnName: 'prosoftId' })
   @ApiProperty({

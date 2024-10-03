@@ -1,18 +1,12 @@
-/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { BaseEntity } from '../base.entity';
 import { JiraOrganisation } from './jira-organisation.entity';
 import { JiraComment } from './jira-comment.entity';
+import { Session } from '../session.entity';
 
 @Entity()
-export class JiraIssue {
-  @ApiProperty({
-    type: 'uuid',
-    description: 'Unique identifier for the Jira issue',
-  })
-  @Column({ type: 'uuid', primary: true })
-  id: string;
-
+export class JiraIssue extends BaseEntity {
   @ManyToOne(() => JiraOrganisation, (organisation) => organisation.issues)
   @ApiProperty({
     type: () => JiraOrganisation,
@@ -27,4 +21,11 @@ export class JiraIssue {
     description: 'Comments related to this Jira issue',
   })
   comments: JiraComment[];
+
+  @OneToOne(() => Session, (session) => session.jiraIssue, { nullable: true })
+  @ApiProperty({
+    type: () => Session,
+    description: 'Session associated with this Jira issue',
+  })
+  session: Session;
 }

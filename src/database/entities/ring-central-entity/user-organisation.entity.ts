@@ -1,17 +1,18 @@
-/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, Column, OneToMany, OneToOne } from 'typeorm';
+import { BaseEntity } from '../base.entity';
 import { Call } from './call.entity';
-import { Organisation } from '.././organisation.entity'; // Adjust the import path as necessary
+import { Organisation } from '../organisation.entity';
 
 @Entity()
-export class UserOrganisation {
+export class UserOrganisation extends BaseEntity {
   @ApiProperty({
-    type: 'uuid',
-    description: 'Unique identifier for the user organisation',
+    type: () => Call,
+    isArray: true,
+    description: 'Calls associated with this user organisation',
   })
-  @Column({ type: 'uuid', primary: true })
-  id: string;
+  @OneToMany(() => Call, (call) => call.userOrganisation)
+  calls: Call[];
 
   @ApiProperty({ type: 'string', description: 'Name of the user organisation' })
   @Column({ type: 'varchar' })
@@ -24,16 +25,7 @@ export class UserOrganisation {
   @Column({ type: 'varchar' })
   defaultNumber: string;
 
-  @OneToMany(() => Call, (call) => call.userOrganization)
-  @ApiProperty({
-    type: () => Call,
-    isArray: true,
-    description: 'Calls associated with this user organisation',
-  })
-  calls: Call[];
-
-  // One-to-One relationship with Organisation
-  @ManyToOne(() => Organisation, (organisation) => organisation.ringCentralId, {
+  @OneToOne(() => Organisation, (organisation) => organisation.ringCentralId, {
     nullable: false,
   })
   @ApiProperty({

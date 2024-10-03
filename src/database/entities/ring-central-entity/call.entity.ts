@@ -1,14 +1,11 @@
-/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, ManyToOne, OneToOne } from 'typeorm';
+import { BaseEntity } from '../base.entity';
 import { UserOrganisation } from './user-organisation.entity';
 import { Session } from '../session.entity';
-@Entity()
-export class Call {
-  @ApiProperty({ type: 'uuid', description: 'Unique identifier for the call' })
-  @Column({ type: 'uuid', primary: true })
-  id: string;
 
+@Entity()
+export class Call extends BaseEntity {
   @ApiProperty({
     type: 'string',
     description: 'Caller number associated with the call',
@@ -23,17 +20,24 @@ export class Call {
   @Column({ type: 'varchar' })
   calleeNumber: string;
 
+  @Column({ type: 'uuid', nullable: true })
+  @ApiProperty({
+    type: 'uuid',
+    description: 'User Organisation ID associated with the call',
+  })
+  userOrganisationId: string;
+
   @ManyToOne(
     () => UserOrganisation,
-    (userOrganization) => userOrganization.calls,
+    (userOrganisation) => userOrganisation.calls,
   )
   @ApiProperty({
     type: () => UserOrganisation,
     description: 'User Organisation associated with this call',
   })
-  userOrganization: UserOrganisation;
+  userOrganisation: UserOrganisation;
 
-  @OneToOne(() => Session, (session) => session.call)
+  @OneToOne(() => Session, (session) => session.ringCentralId)
   @ApiProperty({
     type: () => Session,
     description: 'Session associated with this call based on ringCentralId',

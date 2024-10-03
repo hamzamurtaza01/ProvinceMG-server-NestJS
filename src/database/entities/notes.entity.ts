@@ -1,16 +1,12 @@
-/* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
 import { Entity, Column, ManyToOne, OneToOne, JoinColumn } from 'typeorm';
-import { Session } from './session.entity'; // Adjust the path as necessary
+import { BaseEntity } from './base.entity';
+import { Session } from './session.entity';
 import { JiraComment } from './jira-entity/jira-comment.entity';
 import { ProsoftNote } from './prosoftware-entity/prosoft-note.entity';
 
 @Entity()
-export class Note {
-  @ApiProperty({ type: 'uuid', description: 'Unique identifier for the note' })
-  @Column({ type: 'uuid', primary: true, generated: 'uuid' })
-  id: string;
-
+export class Note extends BaseEntity {
   @ApiProperty({ type: 'string', description: 'Title of the note' })
   @Column({ type: 'varchar', length: 255 })
   title: string;
@@ -25,14 +21,6 @@ export class Note {
     description: 'The session associated with this note',
   })
   session: Session;
-
-  @OneToOne(() => JiraComment)
-  @JoinColumn({ name: 'jiraId', referencedColumnName: 'id' })
-  @ApiProperty({
-    type: () => JiraComment,
-    description: 'Jira comment associated with the note',
-  })
-  jiraId: JiraComment;
 
   @ApiProperty({
     type: 'string',
@@ -49,4 +37,12 @@ export class Note {
     description: 'Prosoft note associated with this note',
   })
   prosoftNote: ProsoftNote;
+
+  @OneToOne(() => JiraComment, (jiraComment) => jiraComment.note)
+  @JoinColumn({ name: 'jiraId', referencedColumnName: 'id' })
+  @ApiProperty({
+    type: () => JiraComment,
+    description: 'Jira comment associated with the note',
+  })
+  jiraId: JiraComment;
 }
