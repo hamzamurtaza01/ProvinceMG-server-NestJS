@@ -1,5 +1,8 @@
 {
   "markdown.extension.toc.levels": "2..6",
   "markdown.extension.orderedList.autoRenumber": false,
-  "typescript.preferences.importModuleSpecifier": "relative"
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "reactSnippets.settings.prettierEnabled": true
 }
