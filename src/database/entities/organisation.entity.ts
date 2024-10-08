@@ -33,7 +33,7 @@ export class Organisation extends BaseEntity {
   })
   userOrg: UserOrganisation;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar' })
   @ApiProperty({
     type: 'string',
     description: 'RingCentral ID for organisation',
