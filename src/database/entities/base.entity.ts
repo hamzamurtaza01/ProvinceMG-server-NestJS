@@ -6,16 +6,16 @@ import {
   DeleteDateColumn,
   Column,
 } from 'typeorm';
-import { nanoid } from 'nanoid';
+import { v4 as uuidv4 } from 'uuid';
 
 export class BaseEntity {
-  @PrimaryColumn({ type: 'varchar', length: 21 })
+  @PrimaryColumn({ type: 'varchar', length: 36 }) // UUIDs are 36 characters long
   @ApiProperty({
     type: String,
     description: 'Unique identifier for the entity',
-    example: nanoid(),
+    example: uuidv4(),
   })
-  uid: string = nanoid(); // Automatically assign a unique ID
+  uid: string = uuidv4(); // Automatically assign a unique UUID
 
   @CreateDateColumn()
   @ApiProperty({
@@ -46,7 +46,7 @@ export class BaseEntity {
   @ApiProperty({
     type: String,
     description: 'ID of the user who created this entity',
-    example: nanoid(),
+    example: uuidv4(),
     required: false,
   })
   createdBy?: string;
