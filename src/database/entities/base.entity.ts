@@ -1,21 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   CreateDateColumn,
-  PrimaryColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  PrimaryGeneratedColumn,
   Column,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
 export class BaseEntity {
-  @PrimaryColumn({ type: 'varchar', length: 36 }) // UUIDs are 36 characters long
+  @PrimaryGeneratedColumn('uuid')
   @ApiProperty({
     type: String,
     description: 'Unique identifier for the entity',
     example: uuidv4(),
   })
-  uid: string = uuidv4(); // Automatically assign a unique UUID
+  id: string = uuidv4(); // Automatically assign a unique UUID
 
   @CreateDateColumn()
   @ApiProperty({

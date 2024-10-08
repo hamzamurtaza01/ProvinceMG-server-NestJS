@@ -9,7 +9,7 @@ import { ProsoftCoEmployee } from './prosoftware-entity/prosoft-co-employee.enti
 @Entity()
 export class Caller extends BaseEntity {
   @ApiProperty({ type: 'string', description: 'Name of the caller' })
-  @Column({ type: 'string' })
+  @Column({ type: 'varchar', length: 255 }) // Changed type to 'varchar'
   name: string;
 
   @OneToMany(() => ContactPoint, (contactPoint) => contactPoint.caller)
@@ -39,7 +39,7 @@ export class Caller extends BaseEntity {
     type: 'string',
     description: 'Prosoft ID associated with the caller',
   })
-  @Column({ type: 'string', nullable: true })
+  @Column({ type: 'varchar', nullable: true }) // Changed type to 'varchar'
   prosoftId: string;
 
   @OneToOne(() => ProsoftCoEmployee)

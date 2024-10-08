@@ -51,11 +51,13 @@ export class Session extends BaseEntity {
   })
   notes: Note[];
 
-  @Column({ type: 'datetime' })
+  // Changed from 'datetime' to 'timestamptz'
+  @Column({ type: 'timestamptz' })
   @ApiProperty({ type: 'string', description: 'Start time of the session' })
   startAt: Date;
 
-  @Column({ type: 'datetime' })
+  // Changed from 'datetime' to 'timestamptz'
+  @Column({ type: 'timestamptz' })
   @ApiProperty({ type: 'string', description: 'End time of the session' })
   endAt: Date;
 
