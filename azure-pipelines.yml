@@ -1,0 +1,47 @@
+trigger:
+  branches:
+    include:
+    - refs/heads/main
+jobs:
+- job: Job_1
+  displayName: Agent job 1
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - task: NodeTool@0
+    displayName: Use Node 18.15.0
+    inputs:
+      versionSpec: 18.15.0
+  - task: Npm@1
+    displayName: npm install
+    inputs:
+      verbose: false
+  - task: Npm@1
+    displayName: npm custom
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: 'run build'
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: dist'
+    inputs:
+      Contents: package*.json
+      TargetFolder: dist
+  - task: Npm@1
+    displayName: npm custom ci --production
+    inputs:
+      command: custom
+      workingDir: dist
+      verbose: false
+      customCommand: ci --production
+  - task: ArchiveFiles@2
+    displayName: Archive dist
+    inputs:
+      rootFolderOrFile: dist
+      archiveFile: dist.zip
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Artifact
+    inputs:
+      PathtoPublish: dist.zip
