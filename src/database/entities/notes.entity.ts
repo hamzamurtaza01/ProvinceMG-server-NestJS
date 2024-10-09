@@ -22,11 +22,14 @@ export class Note extends BaseEntity {
   })
   session: Session;
 
+  @Column({ type: 'uuid' })
+  sessionId: string;
+
   @ApiProperty({
     type: 'string',
     description: 'Prosoft ID associated with the note',
   })
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, unique: true })
   prosoftId: string;
 
   @OneToOne(() => ProsoftNote, (prosoftNote) => prosoftNote.note, {
