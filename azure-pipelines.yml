@@ -1,42 +1,36 @@
 trigger:
   branches:
     include:
-      - main  # Specify the branch
+      - main  # Adjust based on your main branch
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  imageName: 'nodeapp'  # Docker image repository name
-  tag: '$(Build.BuildId)'  # Use Build.BuildId for tagging the image
+  dockerRegistryServiceConnection: 'provincemanagmentqa.azurecr.io' # Set this up in Azure DevOps
+  imageRepository: 'main'  # Your Docker repository name
+  containerRegistry: 'provincemanagmentqa.azurecr.io/myapp' # Docker Hub or Azure Container Registry (ACR)
+  dockerfilePath: '**/Dockerfile'
+  tag: '$(Build.BuildId)'
 
 steps:
-# Install Node.js and dependencies
-- task: NodeTool@0
-  inputs:
-    versionSpec: '18.x'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Install Node.js'
 
-- script: |
-    npm install
-    npm run build  # Optional if your app has a build step
-  displayName: 'Install dependencies and build the app'
+  - script: |
+      npm install
+    displayName: 'Install dependencies'
 
-# Build and push Docker image to Azure Container Registry (ACR)
-- task: Docker@2
-  displayName: 'Build and Push Docker image to ACR'
-  inputs:
-    containerRegistry: '$(dockerRegistryServiceConnection)'  # ACR connection
-    repository: '$(imageName)'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-    tags: |
-      $(tag)
+  - task: Docker@2
+    displayName: 'Build and Push Docker Image'
+    inputs:
+      containerRegistry: '$(dockerRegistryServiceConnection)'
+      repository: '$(imageRepository)'
+      command: 'buildAndPush'
+      Dockerfile: '$(dockerfilePath)'
+      tags: |
+        $(tag)
 
-# Deploy to Azure App Service using the image built
-- task: AzureWebAppContainer@1
-  inputs:
-    azureSubscription: '$(azureSubscriptionConnection)'  # Azure Resource Manager connection
-    appName: 'your-app-service-name'  # Azure App Service name
-    containerRegistry: '$(dockerRegistryServiceConnection)'
-    imageName: '$(imageName)'
-    tag: '$(tag)'  # Deploy the image tagged with Build.BuildId
+  - script: echo "Docker image built and pushed successfully."
